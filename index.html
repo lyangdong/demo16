@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="jquery-1.12.4.min.js"></script>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            width: 300px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #cccccc;
+            position: relative;
+            background-color: #eeeeee;
+        }
+        span{
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+            border: 1px solid #cccccc;
+            position: absolute;
+            left: 0;
+            background-color: white;
+            z-index: 10;
+            use-select:none
+        }
+        .bg{
+            background-color: lawngreen;
+            height:calc(100% - 2px);
+            width: 0;
+            position: absolute;
+            z-index: 0;
+            overflow: hidden;
+        }
+        b{
+            position: absolute;
+            left: 100px;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"><div class="bg"></div><span> >> </span><b>拖动滑块验证</b></div>
+
+</body>
+<script>
+    $('span').mousedown(function(){
+        $(window).mousemove(function(e){
+            var x =e.pageX -$('span').width()/2;
+            if(x <= 0){
+                x = 0;
+            }
+            if(x >= $('.box').width()-$('span').width()){
+                x = $('.box').width()-$('span').width()
+            }
+            if( 0 < x < $('.box').width()-$('span').width()){
+                $('span').css('left',x);
+                $('.bg').css('width',x);
+                myFunc()
+            }
+            if( $('.bg').width()==  $('.box').width()-$('span').width()){
+                $(window).unbind('mousemove mouseup');
+                $('span').unbind('mousedown');
+                alert('已经解锁');
+            }
+        })
+    });
+    function myFunc(){
+        $(window).mouseup(function(){
+            $(this).css('left',0);
+            $('.bg').css('width',0);
+            $(window).unbind('mousemove');
+            $('span').css('left',0);
+        })
+    }
+
+</script>
+</html>
